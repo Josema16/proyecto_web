@@ -16,12 +16,13 @@ from decimal import Decimal
 
 # Create your views here.
 def home(request):
+    return render(request, 'pagina/index2.html')
+
+def catalogo(request):
     if 'categoria' in request.GET:
         categoria = request.GET['categoria']
     else:
         categoria = 'todo'
-
-    # Pensar como hacer el filtrado de precios
 
     if 'filtrado' in request.GET:
         filtrado = request.GET['filtrado']
@@ -52,9 +53,7 @@ def home(request):
     'item_list':item_list,
     'product':product,
     }
-
-    return render(request, 'pagina/index2.html', context)
-
+    return render(request, 'pagina/catalogo.html', context)
 # Creacion de la vista de signup_view
 def signup_user_view(request):
     if request.method == 'POST':
@@ -244,7 +243,7 @@ def mostrarpedidos(request,pk=None):
     else:
         user =request.user
 
-    return render(request,'pagina/mostrarpedidos.html',{'list':Purchase.objects.all().filter(purchaser=user)})
+    return render(request,'pagina/mostrarpedidos.html',{'list':Orders.objects.all().filter(purchaser=user,status="PAGADO")})
 
 
 @login_required
@@ -254,7 +253,7 @@ def citasdescripcion(request,id):
 
 @login_required
 def pedidosdescripcion(request,id):
-    resource = get_object_or_404(Purchase,pk=id)
+    resource = get_object_or_404(Orders,pk=id)
     return render(request,'pagina/pedidosdescripcion.html',{'resource':resource})
 
 
