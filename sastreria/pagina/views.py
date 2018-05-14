@@ -111,7 +111,7 @@ def change_password(request):
             update_session_auth_hash(request, form.user)
             return redirect('/profile/')
         else:
-            return redirect('/change_password/')
+            return redirect('/password/')
     else:
         form = PasswordChangeForm(user = request.user)
     return render(request, 'pagina/change_password.html', {'form': form})
